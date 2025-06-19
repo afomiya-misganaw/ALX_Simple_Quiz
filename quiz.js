@@ -1,45 +1,53 @@
-document.addEventListener('DOMContentLoaded', function() {
+ document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('registration-form');
     const feedbackDiv = document.getElementById('form-feedback');
 
-    // Main validation function (required by your task)
-    function answer() {
-        // Get trimmed inputs
-        const username = document.getElementById('username').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value.trim();
-
-        // Validation logic
+    // The REQUIRED answer() function containing ALL validation logic
+    function answer(username, email, password) {
         let isValid = true;
         const messages = [];
 
+        // Username validation
         if (username.length < 3) {
             isValid = false;
-            messages.push('Username must be at least 3 characters.');
+            messages.push('Username must be at least 3 characters');
         }
 
+        // Email validation
         if (!email.includes('@') || !email.includes('.')) {
             isValid = false;
-            messages.push('Invalid email format.');
+            messages.push('Email must contain @ and .');
         }
 
+        // Password validation
         if (password.length < 8) {
             isValid = false;
-            messages.push('Password must be 8+ characters.');
+            messages.push('Password must be at least 8 characters');
         }
 
-        // Display feedback
+        // Display results
         feedbackDiv.style.display = 'block';
-        feedbackDiv.innerHTML = isValid 
-            ? '<span style="color:#28a745">Registration successful!</span>' 
-            : messages.map(msg => `<span style="color:#dc3545">${msg}</span>`).join('<br>');
+        if (isValid) {
+            feedbackDiv.textContent = 'Registration successful!';
+            feedbackDiv.style.color = '#28a745'; // Green
+        } else {
+            feedbackDiv.innerHTML = messages.join('<br>');
+            feedbackDiv.style.color = '#dc3545'; // Red
+        }
 
-        return isValid; // Returns true/false for external use if needed
+        return isValid; // Returns validation status
     }
 
     // Form submission handler
     form.addEventListener('submit', function(event) {
         event.preventDefault();
-        answer(); // Call the required function
+        
+        // Get trimmed values
+        const username = document.getElementById('username').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+
+        // Call the REQUIRED answer() function with inputs
+        answer(username, email, password); 
     });
 });
