@@ -1,53 +1,43 @@
- document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('registration-form');
-    const feedbackDiv = document.getElementById('form-feedback');
-
-    // The REQUIRED answer() function containing ALL validation logic
-    function answer(username, email, password) {
-        let isValid = true;
-        const messages = [];
-
-        // Username validation
-        if (username.length < 3) {
-            isValid = false;
-            messages.push('Username must be at least 3 characters');
-        }
-
-        // Email validation
-        if (!email.includes('@') || !email.includes('.')) {
-            isValid = false;
-            messages.push('Email must contain @ and .');
-        }
-
-        // Password validation
-        if (password.length < 8) {
-            isValid = false;
-            messages.push('Password must be at least 8 characters');
-        }
-
-        // Display results
-        feedbackDiv.style.display = 'block';
-        if (isValid) {
-            feedbackDiv.textContent = 'Registration successful!';
-            feedbackDiv.style.color = '#28a745'; // Green
-        } else {
-            feedbackDiv.innerHTML = messages.join('<br>');
-            feedbackDiv.style.color = '#dc3545'; // Red
-        }
-
-        return isValid; // Returns validation status
+// Function to check the user's answer
+function checkAnswer() {
+    // 1. Define the correct answer
+    const correctAnswer = "4";
+    
+    // 2. Get the user's selected answer
+    const selectedRadio = document.querySelector('input[name="quiz"]:checked');
+    
+    // Check if an answer was selected
+    if (!selectedRadio) {
+        document.getElementById('feedback').textContent = "Please select an answer!";
+        return;
     }
+    
+    const userAnswer = selectedRadio.value;
+    
+    // 3. Compare answers and provide feedback
+    const feedbackElement = document.getElementById('feedback');
+    
+    if (userAnswer === correctAnswer) {
+        feedbackElement.textContent = "Correct! Well done.";
+        feedbackElement.style.color = "green";
+    } else {
+        feedbackElement.textContent = "That's incorrect. Try again!";
+        feedbackElement.style.color = "red";
+    }
+}
 
-    // Form submission handler
-    form.addEventListener('submit', function(event) {
-        event.preventDefault();
-        
-        // Get trimmed values
-        const username = document.getElementById('username').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value.trim();
-
-        // Call the REQUIRED answer() function with inputs
-        answer(username, email, password); 
-    });
-});
+// 4. Add event listener to the submit button
+document.getElementById('submit-answer').addEventListener('click', checkAnswer);
+const questions = [
+    {
+        question: "What is 2 + 2?",
+        answers: ["4", "22", "3"],
+        correct: "4"
+    },
+    // Add more questions here
+];
+let score = 0;
+// Update score when answer is correct
+score++;
+let currentQuestion = 0;
+// Add next/previous buttons
